@@ -1,7 +1,27 @@
 
 ### OFDM MODEM
 
-Quick start:
+## How to compile
+
+To test this against Rattlegram 
+Clone this repository branch  named "short":
+
+```
+git clone -b short https://github.com/aicodix/modem.git
+```
+
+Look and read makefile! ;-)
+I.e. you will also need these repos in the same directory where you clonned modem repo:
+```
+git clone https://github.com/aicodix/code.git
+git clone https://github.com/aicodix/dsp.git
+```
+
+You can use g++ or clang++ compilers. To configure which one - un/comment lines beginning with CXX in makefile.
+Compiling - simple run make command.
+
+
+## Quick start:
 
 Create file ```uncoded.dat``` with ```1360``` bits of random data:
 
@@ -38,6 +58,38 @@ Compare original ```uncoded.dat``` with ```decoded.dat```:
 ```
 diff -s uncoded.dat decoded.dat
 ```
+### Testing decode of audio file recorded from Rattlegram
+
+In this case you could probably have to play wich mic sensivity and audio volumes.
+Record an audiofile by using come audiorecorder either directly from your Android Rattlegram app or transmitted one from receiver.
+
+To decode file must be WAV audiofile with 8000 Hz sample rate, 16 bits and only one (real) channel.
+If not - convert them, f.ex.:
+
+```
+sox Rec.wav -r 8000 -b 16 -c 1 Rec_16b.wav
+```
+
+Then decode with the same method above:
+```
+./decode decoded.dat Rec_16b.wav
+```
+
+On success you will have similar output with no error messages:
+
+```
+symbol pos: 2287
+coarse cfo: 1450.06 Hz 
+oper mode: 14
+call sign: ANONYMOUS
+demod .... done
+coarse sfo: 7.8106 ppm
+finer cfo: 1450 Hz 
+Es/N0 (dB): 17.152 17.3675 17.7039 17.6775
+bit flips: 0
+```
+
+and message text is in decoded.dat file.
 
 ### Simulating
 
